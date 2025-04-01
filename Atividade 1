@@ -34,8 +34,7 @@ morrer ( "houve um erro:"  .mysqli_connect_erro  ()) ;
 }
 ? >
 
-HTML
-
+HTML:
 <! DOCTYPE html > 
 < html lang = "pt" > 
 < cabeça >
