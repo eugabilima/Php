@@ -1,1 +1,71 @@
-ka.
+CADASTRO: 
+<?php
+incluir ( "conexao.php" );
+
+$nome = $_POST[ 'nome' ];
+$nascimento = $_POST[ ' nascimento' ];
+$email = $_POST[ 'email' ];
+$série = $_POST[ 'série' ];
+
+$sql = " INSERT INTO alunos(nome,nascimento,email, serie)
+VALORES ( ' $nome ' , ' $nascimento ' , ' $email ' , ' $série ' ) " ;
+
+se ( mysqli_query  ($conexao,$sql)) {
+   echo  "Aluno cadastrado com sucesso!" ;
+} outro {
+    eco  "erro"  .  mysqli_connect_erro ($conexao);
+}
+mysqli_close ($conexao);
+? >
+
+
+CONEXAO:
+<?php
+$servidor =  "localhost" ;
+$usuario =  "root" ;
+$senha =  "123456" ;
+$dbname =  "cadastro" ;
+
+$conexao = mysqli_connect ($ servidor,$usuário,$senha,$ nomebd);
+
+se ( ! $conexao){
+morrer ( "houve um erro:"  .mysqli_connect_erro  ()) ;
+
+}
+? >
+
+HTML
+
+<! DOCTYPE html > 
+< html lang = "pt" > 
+< cabeça >
+    < meta charset = "UTF-8" > 
+    < meta nome = "viewport" conteúdo = "largura=largura-do-dispositivo, escala-inicial=1.0" >  
+    < title > Cadastro de Alunos </ title >
+</ cabeça >
+< corpo >
+    < form action = "cadastro.php" method = "POST" >  
+
+< label for = "" > Nome do Aluno: </ label >    
+< tipo de entrada = "texto" nome = "nome" >    
+</ br >
+        
+< label for = "" > Dados de Nascimento: </ label >    
+< tipo de entrada = "texto" nome = "nascimento" >    
+</ br >
+        
+< label for = "" > E-mail: </ label >    
+< tipo de entrada = "texto" nome = "e-mail" >    
+</ br >
+        
+< label for = "" > Série do Aluno: </ label >    
+< tipo de entrada = "texto" nome = "série" >    
+</ br >
+
+< button > Cadastar Aluno </ button >
+
+</ formulário >
+
+</ corpo >
+</ html >
+
