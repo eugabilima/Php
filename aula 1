@@ -1,1 +1,72 @@
-kakaka
+Olá Mundo em PHP
+<?php
+echo "Olá, mundo!";
+?>
+
+Declarando uma variável string
+<?php
+$nome = "Ana";
+echo $nome;
+?>
+
+Variável inteira e operação matemática
+<?php
+$idade = 25;
+$ano_futuro = $idade + 5;
+echo $ano_futuro;
+?>
+
+Variável float (número com vírgula)
+<?php
+$altura = 1.65;
+echo "Altura: " . $altura . "m";
+?>
+
+Variável booleana (verdadeiro ou falso)
+<?php
+$tem_carteira = true;
+if ($tem_carteira) {
+echo "Pode dirigir";
+} else {
+echo "Não pode dirigir";
+}
+?>
+
+Concatenando variáveis com .
+<?php
+$nome = "João";
+$sobrenome = "Silva";
+echo "Nome completo: " . $nome
+. " " . $sobrenome;
+?>
+
+Constantes em PHP
+<?php
+define("PI", 3.1415);
+echo "O valor de PI é: " . PI;
+?>
+
+Verificando o tipo com gettype()
+<?php
+$numero = 10;
+echo gettype($numero);
+?>
+
+Declarando múltiplas variáveis
+<?php
+$produto = "Caneta";
+$preco = 2.50;
+$quantidade = 10;
+echo "Produto: $produto - Total: " . ($preco * $quantidade);
+?>
+
+Comentários em PHP
+<?php
+// Comentário de uma linha
+# Outro comentário de uma linha
+/*
+Comentário de várias linhas
+*/
+$mensagem = "Comentários não são executados!";
+echo $mensagem;
+?>
