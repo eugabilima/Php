@@ -1,0 +1,32 @@
+Dashboard
+<?php
+// Incluindo a conexão
+include("conexao.php");
+
+// fazendo a busca no banco
+$sql = "SELECT * FROM cadastro";
+//Variável result responsável por trazer os dados do banco para
+// Interface do usuário
+$result = mysqli_query($conexao, $sql);
+?>
+
+<div class="container">
+    <h2>Lista de Usuários</h2>
+    <table>
+      <tr>
+        <th>id</th>
+        <th>nome</th>
+        <th>nascimento</th>
+        <th>email</th>
+        <th>senha</th>
+        <th>serie</th>
+      </tr>
+      <?php while($row = mysqli_fetch_assoc($result)) { ?>
+        <tr>
+          <td><?php echo $row['id']; ?></td>
+          <td><?php echo $row['email']; ?></td>
+          <td><?php echo $row['senha']; ?></td>
+        </tr>
+      <?php } ?>
+    </table>
+  </div>
