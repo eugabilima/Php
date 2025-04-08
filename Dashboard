@@ -1,4 +1,4 @@
-Dashboard
+
 <?php
 // Incluindo a conexão
 include("conexao.php");
