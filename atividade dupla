@@ -103,13 +103,13 @@ CADASTRO EMPRESA:
 <?php
 include ("conexao.php");
 
-$nome=$_POST['nome_empresa'];
-$nome=$_POST['email_empresa'];
-$nome=$_POST['senha_empresa'];
-$nome=$_POST['CNPJ'];
+$nome=$_POST['nome'];
+$nome=$_POST['cnpj'];
+$nome=$_POST['email'];
+$nome=$_POST['senha'];
 
-$sql="INSERT INTO empresa(nome_empresa,email_empresa,senh_empresa,CNPJ)
-VALUES ('$nome_empresa', '$email_empresa', '$senha_empresa','$CNPJ')";
+$sql="INSERT INTO empresa(nome,cnpj,email,senha)
+VALUES ('$nome', '$cnpj', '$email','$senha')";
 
 if (mysqli_query($conexao,$sql)) {
     echo  "Empresa cadastrado com sucesso!" ;
