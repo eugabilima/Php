@@ -404,8 +404,108 @@ box-sizing: border-box;
 font-size: 1rem;
 }
 
-
 </style>
 
 </body>
 </html>
+
+
+
+ATUALIZAR.PHP
+
+<?php
+include("conexao.php");
+
+$id = $_POST['id'];
+$nome = $_POST['nome'];
+$cnpj = $_POST['cnpj'];
+$email= $_POST['email'];
+$senha = $_POST['senha'];
+
+$sql = "UPDATE cadastro SET nome='$nome', cnpj='$cnpj', email='$email', senha='$senha' WHERE id=$id";
+
+if (mysqli_query($conexao, $sql)) {
+    header("Location: dashboard.php");
+} else {
+    echo "Erro ao atualizar: " . mysqli_error($conexao);
+}
+?>
+
+
+ATUALIZAR2.PHP
+
+<?php
+include("conexao.php");
+
+$id = $_POST['id'];
+$nome = $_POST['nome'];
+$email= $_POST['email'];
+$telefone = $_POST['telefone'];
+$senha = $_POST['senha'];
+
+$sql = "UPDATE cadastro SET nome='$nome', email='$email', telefone='$telefone', senha='$senha' WHERE id=$id";
+
+if (mysqli_query($conexao, $sql)) {
+    header("Location: dashboard.php");
+} else {
+    echo "Erro ao atualizar: " . mysqli_error($conexao);
+}
+?>
+
+EDITAR.PHP
+
+?php
+include("conexao.php");
+
+$id = $_GET['id'];
+$sql = "SELECT * FROM cadastro WHERE id = $id";
+$result = mysqli_query($conexao, $sql);
+$dados = mysqli_fetch_assoc($result);
+?>
+
+<h2>Editar Usuário</h2>
+<form action="atualizar.php" method="POST">
+<!-- O hidden vai esconder o ID do usuário para que não
+ seja atualizado pelo usuário na troca de atualização -->
+  <input type="hidden" name="id" value="<?php echo $dados['id']; ?>">
+  Nome: <input type="text" name="nome" value="<?php echo $dados['nome']; ?>"><br>
+  Cnpj: <input type="text" name="cnpj" value="<?php echo $dados['cnpj']; ?>"><br>
+  Email: <input type="text" name="email" value="<?php echo $dados['email']; ?>"><br>
+  Senha: <input type="text" name="senha" value="<?php echo $dados['senha']; ?>"><br>
+  <button type="submit">Atualizar</button>
+</form>
+
+EDITAR2.PHP
+
+<?php
+include("conexao.php");
+
+$id = $_GET['id'];
+$sql = "SELECT * FROM cadastro WHERE id = $id";
+$result = mysqli_query($conexao, $sql);
+$dados = mysqli_fetch_assoc($result);
+?>
+
+<h2>Editar Usuário</h2>
+<form action="atualizar.php" method="POST">
+<!-- O hidden vai esconder o ID do usuário para que não
+ seja atualizado pelo usuário na troca de atualização -->
+  <input type="hidden" name="id" value="<?php echo $dados['id']; ?>">
+  Nome: <input type="text" name="nome" value="<?php echo $dados['nome']; ?>"><br>
+  Email: <input type="text" name="email" value="<?php echo $dados['email']; ?>"><br>
+  Telefone: <input type="text" name="telefone" value="<?php echo $dados['telefone']; ?>"><br>
+  Senha: <input type="text" name="senha" value="<?php echo $dados['senha']; ?>"><br>
+  <button type="submit">Atualizar</button>
+</form>
+
+
+
+
+
+
+
+
+
+
+
+
