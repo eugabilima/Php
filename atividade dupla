@@ -27,7 +27,7 @@ CONEXAO.PHP---------------------------------------------------------------------
 $servidor = "localhost";
 $usuario = "root";
 $senha = "";
-$dbname = "cadastro";
+$dbname = "face";
 
 $conexao = mysqli_connect($servidor, $usuario, $senha, $dbname);
 
