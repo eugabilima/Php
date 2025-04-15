@@ -1,27 +1,23 @@
 BANCO DE DADOS----------------------------------------------------------------------------------------------------------------------------------
 
 create database face;
-drop database cadastro;
 use face;
 
-create table candidato(
-id_candidato int primary key auto_increment,
-nome varchar (300),
-email varchar(200),
-telefone varchar(200),
-senha varchar(20)
-);
-
 create table empresa(
-id_empresa int primary key auto_increment,
-nome varchar (100),
+id_emp int primary key auto_increment, 
+nome varchar(120),
 cnpj varchar(20),
-email varchar (200),
-senha varchar (20)
-);
+email varchar(120), 
+senha varchar(12));
 
-select*from candidato;
-select*from empresa;
+create table candidato(
+id_cand int primary key auto_increment, 
+nome varchar(120),
+email varchar(20),
+telefone varchar(120), 
+senha varchar(12));
+
+select * from empresa;
 
 CADASTRO.PHP----------------------------------------------------------------------------------------------------------------------------
 
@@ -36,11 +32,10 @@ $senha = $_POST['senha'];
 
 $sql = " INSERT INTO empresa (nome,cnpj,email,senha)
 values ('$nome','$cnpj','$email','$senha')";
-
 if (mysqli_query ($conexao,$sql)) {
     header('Location: empresa.html');
  } else {
-     echo "erro" . mysqli_connect_error($conexao);
+     echo "erro" . mysqli_connect_erro($conexao);
  }
 
 mysqli_close($conexao);
@@ -49,16 +44,17 @@ mysqli_close($conexao);
 CONEXAO.PHP---------------------------------------------------------------------------------------------------
 
 <?php
-$servidor = "localhost";
+$servidor ="localhost";
 $usuario = "root";
-$senha = "";
-$dbname = "face";
+$senha = "123456";
+$dbname="face";
 
-$conexao = mysqli_connect($servidor, $usuario, $senha, $dbname);
-
-if (!$conexao) {
-    die("Houve um erro: " . mysqli_connect_error());
+$conexao=mysqli_connect($servidor, $usuario, $senha, $dbname);
+if(!$conexao){
+ die("Houve um erro: ".mysqli_connect_error());
 }
+
+
 
 ?>
 
@@ -75,30 +71,49 @@ $sql = "SELECT * FROM empresa";
 $result = mysqli_query($conexao, $sql);
 ?>
 
-<div class="tabela">
-    <h2>Lista de Empresas</h2>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+</head>
+<body>
+<a href="empresa.html"><button>voltar</button></a>
+
+<div class="header">
+    <h1>Dashboard de Usuários</h1>
+  </div>
+
+  <div class="container">
+    <h2>Lista de Usuários</h2>
     <table>
       <tr>
-        <th>nome</th>
-        <th>cnpj</th>
-        <th>email</th>
-        <th>senha</th>
-       
-      
+        <th>ID</th>
+        <th>Nome</th>
+        <th>Senha</th>
       </tr>
       <?php while($row = mysqli_fetch_assoc($result)) { ?>
         <tr>
-          
-          <td><?php echo $row['nome']; ?></td>
-          <td><?php echo $row['cnpj']; ?></td>
+          <td><?php echo $row['id_emp']; ?></td>
           <td><?php echo $row['email']; ?></td>
           <td><?php echo $row['senha']; ?></td>
-      
-        
         </tr>
+        <td>
+    <a href="editar_empresa.php?id=<?php echo $row['id_emp']; ?>">Editar</a>
+  </td>
       <?php } ?>
+     
+    </table>
+    <td>
+    
+  </td>
+  </div>
+
     </table>
   </div>
+</body>
+</html>
 
 ATUALIZAR.PHP-------------------------------------------------------------------------------------------------------------------------------
 
@@ -106,12 +121,10 @@ ATUALIZAR.PHP-------------------------------------------------------------------
 include("conexao.php");
 
 $id = $_POST['id'];
-$nome = $_POST['nome'];
 $email= $_POST['email'];
-$telefone = $_POST['telefone'];
 $senha = $_POST['senha'];
 
-$sql = "UPDATE cadastro SET nome='$nome', email='$email', telefone='$telefone', senha='$senha' WHERE id=$id";
+$sql = "UPDATE empresa SET email='$email', senha='$senha' WHERE id_emp=$id";
 
 if (mysqli_query($conexao, $sql)) {
     header("Location: dashboard.php");
@@ -122,35 +135,246 @@ if (mysqli_query($conexao, $sql)) {
 
 EDITAR.PHP---------------------------------------------------------------------------------------------------------------------------------
 
-?php
+<?php
 include("conexao.php");
 
 $id = $_GET['id'];
-$sql = "SELECT * FROM cadastro WHERE id = $id";
+$sql = "SELECT * FROM candidato WHERE id_cand = $id";
 $result = mysqli_query($conexao, $sql);
 $dados = mysqli_fetch_assoc($result);
 ?>
 
 <h2>Editar Usuário</h2>
-<form action="atualizar.php" method="POST">
-<!-- O hidden vai esconder o ID do usuário para que não
+<form action="atualizar2.php" method="POST">
+<!-- O hidden vai esconder o ID do usuário para que não 
  seja atualizado pelo usuário na troca de atualização -->
-  <input type="hidden" name="id" value="<?php echo $dados['id']; ?>">
-  Nome: <input type="text" name="nome" value="<?php echo $dados['nome']; ?>"><br>
-  Cnpj: <input type="text" name="cnpj" value="<?php echo $dados['cnpj']; ?>"><br>
-  Email: <input type="text" name="email" value="<?php echo $dados['email']; ?>"><br>
+  <input type="hidden" name="id" value="<?php echo $dados['id_cand']; ?>">
+  E-mail: <input type="text" name="email" value="<?php echo $dados['email']; ?>"><br>
   Senha: <input type="text" name="senha" value="<?php echo $dados['senha']; ?>"><br>
   <button type="submit">Atualizar</button>
 </form>
 
-EMPRESA.HTML---------------------------------------------------------------------------------------------------------------------------------
+CANDIDATO.HTML---------------------------------------------------------------------------------------------------------------------------------
 
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <script src="sricpt.js"></script>
+    <style>
+
+        body {
+        font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+        background-color: #ffffff;
+        margin: 0;
+        padding: 0;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 100vh;
+        }
+        
+        button{
+            
+        background-color: #234aa0;
+        color: #ffffff;
+        padding: 10px 20px;
+        border: none;
+        font-size: 1rem;
+        margin-top: 20px;
+            
+        }
+        label {
+        display: block;
+        margin-bottom: 8px; 
+        font-weight: bold;
+        font-size: 1rem;
+        }
+        
+        
+        .login {
+        background-color: #234aa0;
+        display: block;
+        padding: 1rem;
+        max-width: 350px;
+        border-radius: 0.5rem;
+        color: #ffffff;
+        
+        }
+        
+        input {
+        width: 100%;
+        padding: 10px;
+        margin-top: 5px;
+        border: 1px solid #ffffff;
+        border-radius: 4px;
+        box-sizing: border-box;
+        font-size: 1rem;
+        }
+        
+        
+        </style>
+    <title>Cadastro Candidato</title>
+</head>
+<body>
+    <form action="cadastro2.php" method="POST">
+
+    <div class="login">
+        <label for="nome">Nome do Candidato: </label>
+        <input type="text" name="nome"><br>
+        <label for="email">Email: </label>
+        <input type="text" name="email"><br>
+        <label for="senha">Telefone: </label>
+        <input type="text" name="telefone"><br>
+        <label for="senha">Senha: </label>
+        <input type="text" name="senha"><br>
+    </div>
+
+<button>Cadastrar</button>
+
+
+</form>
+<button onclick="Visualizar1()">Visualizar Candidatos</button>
+
+<script src="script.js"></script>
+</body>
+</html>
+
+
+
+
+CADASTRO2.PHP----------------------------------------------------------------------------------------------------------------
+
+<?php
+include ("conexao.php");
+
+$nome = $_POST['nome'];
+$email= $_POST['email'];
+$telefone = $_POST['telefone'];
+$senha = $_POST['senha'];
+
+
+$sql = " INSERT INTO candidato (nome,email,telefone,senha)
+values ('$nome','$email','$telefone','$senha')";
+if (mysqli_query ($conexao,$sql)) {
+    header('Location: candidato.html');
+ } else {
+     echo "erro" . mysqli_connect_erro($conexao);
+ }
+
+mysqli_close($conexao);
+?>
+
+CONEXAO2.PHP------------------------------------------------------------------------------------------------------
+
+<?php
+$servidor ="localhost";
+$usuario = "root";
+$senha = "";
+$dbname="face";
+
+$conexao=mysqli_connect($servidor, $usuario, $senha, $dbname);
+
+if(!$conexao){
+ die("Houve um erro: ".mysqli_connect_error());
+}
+
+
+
+?>
+
+DASHBOARD2.PHP-----------------------------------------------------------------------------------------------------
+
+<?php
+
+// Incluindo a conexão
+include("conexao.php");
+
+
+$sql = "SELECT * FROM candidato";
+
+$result = mysqli_query($conexao, $sql);
+?>
+
+<a href="candidato.html"><button>voltar</button></a>
+<a href="editar.php"><button>Editar</button></a>
+
+<div class="tabela">
+    <h2>Lista de Candidatos Cadastrados </h2>
+    <table>
+      <tr>
+        <th>nome</th>
+        <th>email</th>
+        <th>telefone</th>
+        <th>senha</th>
+       
+      
+      </tr>
+      <?php while($row = mysqli_fetch_assoc($result)) { ?>
+        <tr>
+        <td><?php echo $row['id_cand']; ?></td>
+          <td><?php echo $row['nome']; ?></td>
+          <td><?php echo $row['email']; ?></td>
+          <td><?php echo $row['telefone']; ?></td>
+          <td><?php echo $row['senha']; ?></td>
+          <td>
+    <a href="editar_candidato.php?id=<?php echo $row['id_cand']; ?>">Editar</a>
+  </td>
+        
+        </tr>
+      <?php } ?>
+    </table>
+  </div>
+
+
+ATUALIZAR2.PHP---------------------------------------------------------------------------------------------------
+
+<?php
+include("conexao.php");
+
+$id = $_POST['id'];
+$email= $_POST['email'];
+$senha = $_POST['senha'];
+
+$sql = "UPDATE candidato SET email='$email', senha='$senha' WHERE id_cand=$id";
+
+if (mysqli_query($conexao, $sql)) {
+    header("Location: dashboard2.php");
+} else {
+    echo "Erro ao atualizar: " . mysqli_error($conexao);
+}
+?>
+
+EDITAR2.PHP-------------------------------------------------------------------------------------------------------------------
+
+<?php
+include("conexao.php");
+
+$id = $_GET['id'];
+$sql = "SELECT * FROM empresa WHERE id_emp = $id";
+$result = mysqli_query($conexao, $sql);
+$dados = mysqli_fetch_assoc($result);
+?>
+
+<h2>Editar Usuário</h2>
+<form action="atualizar.php" method="POST">
+<!-- O hidden vai esconder o ID do usuário para que não 
+ seja atualizado pelo usuário na troca de atualização -->
+  <input type="hidden" name="id" value="<?php echo $dados['id_emp']; ?>">
+  E-mail: <input type="text" name="email" value="<?php echo $dados['email']; ?>"><br>
+  Senha: <input type="text" name="senha" value="<?php echo $dados['senha']; ?>"><br>
+  <button type="submit">Atualizar</button>
+</form>
+
+
+EMPRESA.HTML------------------------------------------------------------------------------------------------------------------
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="script.js"></script>
     <title>Cadastro Candidato</title>
 </head>
 <body>
@@ -229,154 +453,6 @@ font-size: 1rem;
 </html>
 
 
-
-
-CADASTRO2.PHP----------------------------------------------------------------------------------------------------------------
-
-<?php
-include ("conexao.php");
-
-$nome = $_POST['nome'];
-$email= $_POST['email'];
-$telefone = $_POST['telefone'];
-$senha = $_POST['senha'];
-
-
-$sql = " INSERT INTO candidato (nome,email,telefone,senha)
-values ('$nome','$email','$telefone','$senha')";
-if (mysqli_query ($conexao,$sql)) {
-    header('Location: candidato.html');
- } else {
-     echo "erro" . mysqli_connect_error($conexao);
- }
-
-mysqli_close($conexao);
-?>
-
-CONEXAO2.PHP------------------------------------------------------------------------------------------------------
-
-<?php
-$servidor ="localhost";
-$usuario = "root";
-$senha = "";
-$dbname="face";
-
-$conexao=mysqli_connect($servidor, $usuario, $senha, $dbname);
-
-if(!$conexao){
- die("Houve um erro: ".mysqli_connect_error());
-}
-
-
-
-?>
-
-DASHBOARD2.PHP-----------------------------------------------------------------------------------------------------
-
-<?php
-
-// Incluindo a conexão
-include("conexao.php");
-
-
-$sql = "SELECT * FROM candidato";
-
-$result = mysqli_query($conexao, $sql);
-?>
-
-<div class="tabela">
-    <h2>Lista de Candidatos Cadastrados </h2>
-    <table>
-      <tr>
-        <th>nome</th>
-        <th>email</th>
-        <th>telefone</th>
-        <th>senha</th>
-       
-      
-      </tr>
-      <?php while($row = mysqli_fetch_assoc($result)) { ?>
-        <tr>
-          
-          <td><?php echo $row['nome']; ?></td>
-          <td><?php echo $row['email']; ?></td>
-          <td><?php echo $row['telefone']; ?></td>
-          <td><?php echo $row['senha']; ?></td>
-      
-        
-        </tr>
-      <?php } ?>
-    </table>
-  </div>
-
-
-ATUALIZAR2.PHP---------------------------------------------------------------------------------------------------
-
-<?php
-include("conexao.php");
-
-$id = $_POST['id'];
-$nome = $_POST['nome'];
-$email= $_POST['email'];
-$telefone = $_POST['telefone'];
-$senha = $_POST['senha'];
-
-$sql = "UPDATE cadastro SET nome='$nome', email='$email', telefone='$telefone', senha='$senha' WHERE id=$id";
-
-if (mysqli_query($conexao, $sql)) {
-    header("Location: dashboard.php");
-} else {
-    echo "Erro ao atualizar: " . mysqli_error($conexao);
-}
-?>
-
-EDITAR2.PHP-------------------------------------------------------------------------------------------------------------------
-
-<?php
-include("conexao.php");
-
-$id = $_GET['id'];
-$sql = "SELECT * FROM cadastro WHERE id = $id";
-$result = mysqli_query($conexao, $sql);
-$dados = mysqli_fetch_assoc($result);
-?>
-
-<h2>Editar Usuário</h2>
-<form action="atualizar.php" method="POST">
-<!-- O hidden vai esconder o ID do usuário para que não
- seja atualizado pelo usuário na troca de atualização -->
-  <input type="hidden" name="id" value="<?php echo $dados['id']; ?>">
-  Nome: <input type="text" name="nome" value="<?php echo $dados['nome']; ?>"><br>
-  Email: <input type="text" name="email" value="<?php echo $dados['email']; ?>"><br>
-  Telefone: <input type="text" name="telefone" value="<?php echo $dados['telefone']; ?>"><br>
-  Senha: <input type="text" name="senha" value="<?php echo $dados['senha']; ?>"><br>
-  <button type="submit">Atualizar</button>
-</form>
-
-
-CANDIDATO.HTML------------------------------------------------------------------------------------------------------------------
-
-<?php
-include("conexao.php");
-
-$id = $_GET['id'];
-$sql = "SELECT * FROM cadastro WHERE id = $id";
-$result = mysqli_query($conexao, $sql);
-$dados = mysqli_fetch_assoc($result);
-?>
-
-<h2>Editar Usuário</h2>
-<form action="atualizar.php" method="POST">
-<!-- O hidden vai esconder o ID do usuário para que não
- seja atualizado pelo usuário na troca de atualização -->
-  <input type="hidden" name="id" value="<?php echo $dados['id']; ?>">
-  Nome: <input type="text" name="nome" value="<?php echo $dados['nome']; ?>"><br>
-  Email: <input type="text" name="email" value="<?php echo $dados['email']; ?>"><br>
-  Telefone: <input type="text" name="telefone" value="<?php echo $dados['telefone']; ?>"><br>
-  Senha: <input type="text" name="senha" value="<?php echo $dados['senha']; ?>"><br>
-  <button type="submit">Atualizar</button>
-</form>
-
 INDEX.HTML---------------------------------------------------------------------------------------------------------------------
 
 <!DOCTYPE html>
@@ -389,7 +465,6 @@ INDEX.HTML----------------------------------------------------------------------
 </head>
 <body>
 
-    <form action="cadastro.php" method="POST">
     
 
     <div class="container">
@@ -408,7 +483,7 @@ INDEX.HTML----------------------------------------------------------------------
     </footer>
 
 </form>
-
+<script src="script.js"></script>
 </body>
 </html>
 
@@ -416,65 +491,65 @@ INDEX.HTML----------------------------------------------------------------------
 STYLE.CSS--------------------------------------------------------------------------------------------------------------------
 
 body {
-    font-family: "Chakra Petch", sans-serif;
-    display: flex;
-    flex-direction: column;
-    height: 100vh;
-    margin: 0;
-    background-size: cover;
-    background-repeat: no-repeat;
-    justify-content: space-between;
-  
-  }
-  
-  .container {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    width: 100%;
-    padding: 0 50px;
-  }
-  
-  .texto {
-    max-width: 50%;
-    text-align: center;
-  }
-  
-  h2 {
-    color: #ffffff;
-    background-color: #234aa0;
-    padding: 32px;
-  }
-  
-  button {
-    background-color: #234aa0;
-    color: #ffffff;
-    padding: 10px 20px;
-    border: none;
-    font-size: 1rem;
-    margin-top: 20px;
-  }
-  
-  
-  .img {
-    background-image: url(./atv.avif);
-    background-position: center;
-    height: 640px;
-    width: 600px;
-    border-radius: 10px;
-    margin-right: 50px;
-  }
-  
-  footer {
-    background-color: #234aa0;
-    color: #ffffff;
-    text-align: center;
-    padding: 10px 0;
-    width: 100%;
-    font-size: 1rem;
-    position: relative;
-    bottom: 0;
-  }
+  font-family: "Chakra Petch", sans-serif;
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+  margin: 0;
+  background-size: cover;
+  background-repeat: no-repeat;
+  justify-content: space-between;
+
+}
+
+.container {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+  padding: 0 50px;
+}
+
+.texto {
+  max-width: 50%;
+  text-align: center;
+}
+
+h2 {
+  color: #ffffff;
+  background-color: #234aa0;
+  padding: 32px;
+}
+
+button {
+  background-color: #234aa0;
+  color: #ffffff;
+  padding: 10px 20px;
+  border: none;
+  font-size: 1rem;
+  margin-top: 20px;
+}
+
+
+.img {
+  background-image: url(./atv.avif);
+  background-position: center;
+  height: 640px;
+  width: 600px;
+  border-radius: 10px;
+  margin-right: 50px;
+}
+
+footer {
+  background-color: #234aa0;
+  color: #ffffff;
+  text-align: center;
+  padding: 10px 0;
+  width: 100%;
+  font-size: 1rem;
+  position: relative;
+  bottom: 0;
+}
 
 SCRIPT.JS---------------------------------------------------------------------------------------------------------------------------
 
@@ -483,5 +558,5 @@ function Visualizar(){
 }
 
 function Visualizar1(){
-    window.location.href="dashbord2.php"
+    window.location.href="dashboard2.php"
 }
