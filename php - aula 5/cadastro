@@ -1,0 +1,21 @@
+<?php
+include ("conexao.php");
+
+$nome=$_POST['nome'];
+$telefone=$_POST['telefone'];
+$email=$_POST['email'];
+$cpf=$_POST['cpf'];
+$salario=$_POST['salario'];
+
+
+$sql="INSERT INTO funcionario(nome,telefone,email,cpf,salario)
+VALUES ('$nome', '$telefone' , '$email' , '$cpf', '$salario')";
+
+if (mysqli_query ($conexao,$sql)) {
+    header("Location: dados.html");
+ } else {
+     echo "erro" . mysqli_connect_erro($conexao);
+ }
+
+mysqli_close($conexao);
+?>
