@@ -1,0 +1,18 @@
+<?php
+include ("conexao.php");
+
+$nome=$_POST['nome'];
+$nascimento=$_POST['nascimento'];
+$email=$_POST['email'];
+$série=$_POST['serie'];
+
+$sql="INSERT INTO alunos(nome,email,serie,nascimento)
+VALUES ('$nome', '$nascimento', '$email', '$série')";
+
+if (mysqli_query($conexao,$sql)) {
+   echo  "Aluno cadastrado com sucesso!" ;
+} else {
+    echo  "erro"  .  mysqli_connect_error($conexao);
+}
+mysqli_close ($conexao);
+?>
