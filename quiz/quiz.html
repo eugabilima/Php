@@ -1,0 +1,29 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8">
+  <title>Pergunta - Quiz</title>
+  <link rel="stylesheet" href="/quiz/styles.css">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+</head>
+<body>
+  <div class="container">
+    <div class="card">
+      <h2>Pergunta %%INDEX%% de %%TOTAL%%</h2>
+      <p>%%QUESTION%%</p>
+      <form method="post">
+        <label><input type="radio" name="option" value="A" required> A) %%A%%</label>
+        <label><input type="radio" name="option" value="B"> B) %%B%%</label>
+        <label><input type="radio" name="option" value="C"> C) %%C%%</label>
+        <label><input type="radio" name="option" value="D"> D) %%D%%</label>
+        <label><input type="radio" name="option" value="E"> E) %%E%%</label>
+        <div style="margin-top:12px">
+          <button type="submit" class="btn btn-primary">Enviar</button>
+        </div>
+      </form>
+      <p>Pontuação atual: %%SCORE%%</p>
+      <p><a href="menu.php">Cancelar e voltar ao menu</a></p>
+    </div>
+  </div>
+</body>
+</html>
